@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 객체 생성 -->
+	<bean id="write" class="spring.WriteImpl">
+		<!-- 생성자의 매개변수 -->
+		<constructor-arg>
+			<ref bean="articleDao" />
+		</constructor-arg>
+	</bean>
+	<bean id="articleDao" class="spring.MariadbArticleDao" />
+	
+	<!-- AOP 설정 부분 -->
+	<!-- AspectJ 클래스를 객체화  -->
+	<bean id="logging" class="spring.LoggingAspect" />
+	
+	<!--
+		aop관련 용어
+		- pointcut : aop대상이 되는 메서드 설정 = 핵심로직 지정
+		- expression : execution(public * spring.*Impl.*(..))
+						- public : 접근제어자
+						- * : 리턴타입
+						- spring.*Impl : 패키지이름.클래스이름
+						- *(..) : 매서드이름(매개변수)
+		- aspect : AOP로 사용될 객체 설정
+					id : aspect의 이름
+					ref="logging" : 객체의 이름
+		- advice : AOP가 실행될 시점 지정
+					around : 이전과 이후 (joinPoint)
+					before : 이전
+					after : 이후
+					afterReturning : 정상 종료 이후
+					afterThrowing : 예외 종료 이후
+	-->
+	
+	<!-- 진정한 의미의 ★ AOP 설정 -->
+	<aop:config>
+		<!-- pointcut : 이 aop의 핵심 로직을 지정해줌
+			 expression : spring 패키지에 속한 클래스 중 이름이 *Impl로 끝나는 클래스의 public매서드
+			 			  - 리턴타입 / 매개변수 상관없음
+						  	execution(접근제어자    리턴타입    패키지.클래스.매서드이름.매개변수의 개수)
+		-->
+		<aop:pointcut
+			expression="execution(public * spring.*Impl.*(..))"
+			id="servicepointcut" />
+			
+		<!-- AOP로 사용될 객체와 pointcut을 지정
+			 ref="logging"을 객체로 쓸거야
+			 =============는 위에서 <bean id="logging" class="spring.LoggingAspect" />
+		-->
+		<aop:aspect id="loggingAspect" ref="logging">
+			<!-- advice 지정
+				 aop:around : 핵심로직의 시작과 끝에 실행됨 (실행 전후)  -->
+			<aop:around method="logging" pointcut-ref="servicepointcut" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

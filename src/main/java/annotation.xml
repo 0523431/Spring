@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- annotation으로 주입할 수 있게 만들어주는 코딩 2줄 -->
+	<!-- 2개의 패키지의 클래스 중 @Component를 가진 클래스를 객체화 시킴 -->
+	<context:component-scan base-package="annotation, main" />
+	<context:annotation-config /> <!-- 생략가능, Autowired 등을 쓸 수 있는 환경을 만듦 -->
+	<aop:aspectj-autoproxy /> <!-- AOP 설정 : annotation방식으로 설정함 -->
+</beans>
