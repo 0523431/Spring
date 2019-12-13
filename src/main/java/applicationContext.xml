@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			               http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="greeter" class="chap01.Greeter">
+	<!--
+		property에는 get과 set이 있는데,
+		여기서는 set을 의미하고 ============>
+		반드시 Greeter클래스에는 setFormat()메서드가 있어야함
+	-->
+	<property name="format" value="%s을 시작합니다" />
+</bean>
+
+<bean id="message" class="chap01.MessageEn" />
+
+</beans>
+
+<!-- 자바에서 bean은 객체야 -->
