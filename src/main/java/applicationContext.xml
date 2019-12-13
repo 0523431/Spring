@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+             			   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="project" class="chap02.Project">
+	<!-- setProperty : setSrcdirs -->
+	<property name="srcdirs">
+		<list>
+			<value>src/</value>
+			<value>srcResource/</value>
+		</list>
+	</property>
+	<property name="bindir" value="bin/" />
+	<property name="classpath" value="src/" />
+	<!-- b에는 buildrunner라는 내가 만든 객체(클래스)에 있는 객체가 주입되어야해 -->
+	<property name="b">
+		<ref bean="runner" />
+	</property>
+</bean>
+
+<bean id="runner" class="chap02.BuildRunner">
+	<property name="path" value="c:/setup/" />
+</bean>
+
+
+<bean id="write" class="chap02.WriteImpl">
+	<!-- 생성자에 매개변수값이 있어야 할 때 (지금 그 매개변수가 ArticleDao) -->
+	<constructor-arg>
+		<ref bean="dao" />
+	</constructor-arg>
+</bean>
+
+<!-- 그 매개변수가 내가 만든 객체(클래스)라서 그 객체를 만들어줘야해 -->
+<bean id="dao" class="chap02.OracleArticleDao" />
+
+</beans>
+
+<!-- 자바에서 bean은 객체야 -->
