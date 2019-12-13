@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- annotation으로 주입할 수 있게 만들어주는 코딩 2줄 -->
+	<!-- chap03 패키지의 클래스 중 @Component를 가진 클래스를 객체화 시킴 -->
+	<context:component-scan base-package="chap03" />
+	<context:annotation-config />
+	
+	<!-- Camera클래스에는 setNumber()가 있어야함을 알 수 있음 -->
+	<bean id="camera1" class="chap03.Camera">
+		<property name="number" value="1" />
+	</bean>
+	<!-- property를 속성의 형태로도 쓸 수 있음
+		 xmlns:p="http://www.springframework.org/schema/p"에 의해서
+	 -->
+	<bean id="camera2" class="chap03.Camera" p:number="2" />
+	<bean id="camera3" class="chap03.Camera" p:number="3" />
+	<bean id="camera4" class="chap03.Camera" p:number="4" />
+	
+	
+	<bean id="windowSensor" class="chap03.InfraredRaySensor">
+		<!-- 생성자에 매개변수값이 있어야 할 때 () -->
+		<constructor-arg value="창센서" />
+		<!-- 이 객체의 별명 (또다른 이름) -->
+		<qualifier value="intrusionDetection" />
+	</bean>
+	
+	<bean id="doorSensor" class="chap03.InfraredRaySensor">
+		<constructor-arg value="현관센서" />
+		<qualifier value="intrusionDetection" />
+	</bean>
+
+	<bean id="lampSensor" class="chap03.InfraredRaySensor">
+		<constructor-arg value="전등센서" />
+	</bean>
+
+	<!-- GRID라는 값을 가진 displayMode 클래스 (setType(String type)가 있어야함) -->
+	<bean id="displayMode" class="chap03.DisplayMode" p:type="GRID" />
+	
+</beans>
